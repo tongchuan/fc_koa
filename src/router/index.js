@@ -1,19 +1,19 @@
 import Router from 'koa-router'
 import fetch from 'node-fetch'
 
-async function getData(){
-	const body = {"billtemplet":"G001ZMAR_INIT00000000000000798579656","position":"list","funcode":"ar_init"};
-	return fetch('http://10.3.14.238/note/template/getAction', {
-        method: 'post',
-        body:    JSON.stringify(body),
-        headers: { 
-        	'Content-Type': 'application/json',
-        	'Cookie': 'JSESSIONID=53B3B5B37642A38CD7438AE8F56721A0; userCode=aaa131; userName=MDU5OTg=; userId=c283c411-925a-4429-9ba7-046b7b03b1ae; authToken=; u_usercode=c283c411-925a-4429-9ba7-046b7b03b1ae; userType=-1; locale=zh_CN; appId=yonyoufi; tenantId=v6luth84; tenantid=v6luth84; yht_username=ST-50-wsCT4T9yDUfkVQ3JmPEc-cas01.example.org__c283c411-925a-4429-9ba7-046b7b03b1ae; yht_usertoken=EX7yVsvb895c6lM5ZR40t0FqSNW%2F60qRUX9DIexiRSdcZ4KqJbimjtg%2BZSBoKUX6FmRiL6o0AR9i6BlQoPa7hg%3D%3D; lastLoginDate=1551063994609; token=d2ViLDM2MDAsU0U5YThyN2NuVllBekJESTZpekxQV2FkM3hndTMzV1REVjhJc1h0dS9lYjZSSzYvNEwwZ2dwK2ZWRXE3aS9MdStwaUg3WlZOKzI4THVXVFQ4RFNpdGc9PQ; u_logints=1551073065430'
-        },
-    })
-    .then(res => res.json())
-    .then(json => json);
-}
+// async function getData(){
+// 	const body = {"billtemplet":"G001ZMAR_INIT00000000000000798579656","position":"list","funcode":"ar_init"};
+// 	return fetch('http://10.3.14.238/note/template/getAction', {
+//         method: 'post',
+//         body:    JSON.stringify(body),
+//         headers: { 
+//         	'Content-Type': 'application/json',
+//         	'Cookie': 'JSESSIONID=53B3B5B37642A38CD7438AE8F56721A0; userCode=aaa131; userName=MDU5OTg=; userId=c283c411-925a-4429-9ba7-046b7b03b1ae; authToken=; u_usercode=c283c411-925a-4429-9ba7-046b7b03b1ae; userType=-1; locale=zh_CN; appId=yonyoufi; tenantId=v6luth84; tenantid=v6luth84; yht_username=ST-50-wsCT4T9yDUfkVQ3JmPEc-cas01.example.org__c283c411-925a-4429-9ba7-046b7b03b1ae; yht_usertoken=EX7yVsvb895c6lM5ZR40t0FqSNW%2F60qRUX9DIexiRSdcZ4KqJbimjtg%2BZSBoKUX6FmRiL6o0AR9i6BlQoPa7hg%3D%3D; lastLoginDate=1551063994609; token=d2ViLDM2MDAsU0U5YThyN2NuVllBekJESTZpekxQV2FkM3hndTMzV1REVjhJc1h0dS9lYjZSSzYvNEwwZ2dwK2ZWRXE3aS9MdStwaUg3WlZOKzI4THVXVFQ4RFNpdGc9PQ; u_logints=1551073065430'
+//         },
+//     })
+//     .then(res => res.json())
+//     .then(json => json);
+// }
 let conntenttype = [
 	'/note/querytemplet_ctr/querybyid'
 ]
@@ -85,8 +85,8 @@ router.all('*', async function(ctx){
 	// let json = await getData2()
 	// ctx.body = json
 })
-router.get('/login', async function (ctx) {
-	let json = await getData()
-	ctx.body = json;
-})
+// router.get('/login', async function (ctx) {
+// 	let json = await getData()
+// 	ctx.body = json;
+// })
 export default router
