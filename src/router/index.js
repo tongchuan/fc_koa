@@ -1,0 +1,92 @@
+import Router from 'koa-router'
+import fetch from 'node-fetch'
+
+async function getData(){
+	const body = {"billtemplet":"G001ZMAR_INIT00000000000000798579656","position":"list","funcode":"ar_init"};
+	return fetch('http://10.3.14.238/note/template/getAction', {
+        method: 'post',
+        body:    JSON.stringify(body),
+        headers: { 
+        	'Content-Type': 'application/json',
+        	'Cookie': 'JSESSIONID=53B3B5B37642A38CD7438AE8F56721A0; userCode=aaa131; userName=MDU5OTg=; userId=c283c411-925a-4429-9ba7-046b7b03b1ae; authToken=; u_usercode=c283c411-925a-4429-9ba7-046b7b03b1ae; userType=-1; locale=zh_CN; appId=yonyoufi; tenantId=v6luth84; tenantid=v6luth84; yht_username=ST-50-wsCT4T9yDUfkVQ3JmPEc-cas01.example.org__c283c411-925a-4429-9ba7-046b7b03b1ae; yht_usertoken=EX7yVsvb895c6lM5ZR40t0FqSNW%2F60qRUX9DIexiRSdcZ4KqJbimjtg%2BZSBoKUX6FmRiL6o0AR9i6BlQoPa7hg%3D%3D; lastLoginDate=1551063994609; token=d2ViLDM2MDAsU0U5YThyN2NuVllBekJESTZpekxQV2FkM3hndTMzV1REVjhJc1h0dS9lYjZSSzYvNEwwZ2dwK2ZWRXE3aS9MdStwaUg3WlZOKzI4THVXVFQ4RFNpdGc9PQ; u_logints=1551073065430'
+        },
+    })
+    .then(res => res.json())
+    .then(json => json);
+}
+let conntenttype = [
+	'/note/querytemplet_ctr/querybyid'
+]
+
+async function getData2(url,method,data){
+	// console.log([url,method,data]);
+	let isjson = conntenttype.some((item)=>item===url)
+	// console.log(isjson);
+	// let urls = 'http://10.3.14.238'+url
+	let urls = 'https://acc.yonyoucloud.com'+url 
+	console.log([urls,isjson,data]);
+	// const body = {"billtemplet":"G001ZMAR_INIT00000000000000798579656","position":"list","funcode":"ar_init"};
+	return fetch(urls, {
+        method: method,
+        body:  method==='GET' ? undefined :JSON.stringify(data),
+        headers: { 
+        	'Content-Type': 'application/json',
+        	'Cookie': 'JSESSIONID=A698D50B79A64686AA472F501C490445; locale=zh_CN; Hm_lvt_yht=1548570042,1548570214,1548656129,1550295559; _ga=GA1.2.500742643.1550540677; acw_tc=276aedec15512314697057248e6ea6184c0ee203b459d3fae0a0ba781cc4e1; authToken=; userType=-1; appId=yonyoufi; Hm_lvt_aps=1551686222; Hm_lpvt_aps=1551686252; at=b44d5ee68b9b7f25063b72246558ab55; yonyou_uid=01d367fd-107d-4b9e-979c-05ec15ea58e8; yonyou_uname=admin6666; yht_username=ST-47098-kY2ozNokouyTzD0kg3Wb-cas01.example.org__01d367fd-107d-4b9e-979c-05ec15ea58e8; yht_usertoken=o%2BOznVdfCjHL1XJ5pvvtI%2FaAk00xBBTBH%2BaoNNOY4c8rYxy5vk%2BLeuNR35q2hIRrhSm9Zh0H99%2FnwuyQ0SXKcA%3D%3D; userCode=admin6666; userName=YWRtaW42NjY2; userId=01d367fd-107d-4b9e-979c-05ec15ea58e8; lastLoginDate=1551679944134; tenantId=yz5kyz5w; token=d2ViLDM2MDAsMHV0dnpPQis1ZERtV212eW9QV1RVR2lYK2V3NTRrVEl6WGdYQk5tTUttOHRhenlqVkJBSXcxa09PbXJlSWZHY3VudzEvdi90L0VpRFRLR0hwOE8wT0E9PQ; u_usercode=01d367fd-107d-4b9e-979c-05ec15ea58e8; u_logints=1551686296208; tenantid=yz5kyz5w'
+        },
+    })
+    .then(res => res.json())
+    .then(json => json);
+}
+
+
+const router = Router();
+// router.all('/ficloud/accbook/querybyaccbook', async function(ctx){
+// 	ctx.body = ctx.request
+// })
+router.all('*', async function(ctx){
+	let url = ctx.request.url;
+	let method = ctx.request.method;
+	if(method.toUpperCase()==='OPTIONS'){
+		return '';
+	}
+	if(url==='/note/querytemplet_ctr/querybyid'){
+		ctx.body = {"success":true,"message":"","data":[{"pk_group":null,"modifier":null,"description":null,"project":null,"employee":null,"dr":0,"pk_org":null,"basecurrency":null,"modifiedtime":null,"billtype":null,"def10":"","children":{"ar_init_b":[{"pk_group":null,"gift":null,"pricetaxtotal":null,"local_freeprice":null,"local_taxamount":null,"modifier":null,"num":null,"project":null,"employee":null,"dr":0,"pk_org":null,"local_freeamount":null,"taxprice":null,"supplier":null,"id":"714F8042-05B3-4C59-9FED-AE9BAEA62F84","state":0,"local_taxrate":null,"busiman":null,"taxrate":null,"warehouse":null,"taxamount":null,"creationtime":"2018-12-25 14:42:50","freeprice":null,"exchangerate":null,"description":null,"manufacturer":"","modifiedtime":null,"local_taxprice":null,"local_pricetaxtotal":null,"def10":"","billitemno":"3","tenantid":"v6luth84","def3":"","rowno":1,"def4":"","creator":null,"def1":"","def2":"","freeamount":null,"dept":null,"material":null,"def9":"","def7":"","def8":"","def5":"","ts":"2018-12-25 14:42:50","customer":null,"def6":""}]},"approvedate":null,"supplier":null,"tenantid":"v6luth84","currency":null,"id":"41536A28-772B-4699-A711-C6434DFC3B43","state":0,"busiman":null,"approver":null,"def3":"","rowno":null,"def4":"","creator":null,"busiaccbook":null,"period":"","def1":"","def2":"","maker":null,"objtype":null,"dept":null,"redflag":null,"accbody":null,"initflag":true,"billdate":null,"def9":"","dyentitycode":"ar_init","creationtime":"2018-12-25 14:42:50","def7":"","billno":"","def8":"","def5":"","ts":"2018-12-25 14:42:50","accpurposes":null,"customer":null,"def6":""}],"code":1,"total":1}
+		return 
+	}else if(url==='/favicon.ico'){
+		return
+	}
+	// else if(url==='/ficloud/accbook/refallbooks'){
+	// 	ctx.body = {"success":true,"message":"操作成功。","data":[{"id":"DAE6E7B8-FA57-48FB-BEC4-0C5865A2468C","creator":{"id":"674db867-600d-40a7-b549-2cb208b60617","code":"super_test","name":"super_test"},"creationtime":"2019-01-23 13:55:33","modifier":{"id":"674db867-600d-40a7-b549-2cb208b60617","code":"super_test","name":"super_test"},"modifiedtime":"2019-02-16 10:15:22","pk_org":{"id":"f80b1da4abf24354bbf5b95ed823f6a1","code":"002","name":"F法人公司-财务组织"},"pk_group":null,"description":null,"ts":"2019-02-16 10:15:22","dr":0,"state":0,"code":"HH","name":"ASS","name2":null,"name3":null,"name4":null,"name5":null,"name6":null,"parentid":null,"classifyid":null,"enable":true,"def1":null,"def2":null,"def3":null,"def4":null,"def5":null,"def6":null,"def7":null,"def8":null,"def9":null,"def10":null,"def11":null,"def12":null,"def13":null,"def14":null,"def15":null,"def16":null,"def17":null,"def18":null,"def19":null,"def20":null,"def21":null,"def22":null,"def23":null,"def24":null,"def25":null,"def26":null,"def27":null,"def28":null,"def29":null,"def30":null,"subjectchart":{"id":"G001ZM0000DEFAULTSUBJECTCHART0000001","code":"0001","name":"基准科目表"},"multidimension":null,"accperiodscheme":{"id":"9a09ff8795034212ac78269438b91aa3","code":"0001","name":"基准会计期间方案"},"currency":{"id":"G001ZM0000DEFAULTCURRENCT00000000001","code":"CNY","name":"人民币"},"accperiod":{"id":"zdxz5dnqaccperiodd0076f720190101","code":"2019-01","name":"2019-01"},"accstandard":{"id":"G001ZM0000DEFAULTACCSTANDARD00000001","code":"01","name":"企业会计准则"},"autoaudit":false,"autotally":true,"accsubject":{"id":"6AC8D6A1-ECBE-4B31-9D90-DC12C8353F47","code":"4103","name":"本年利润"},"profitMethod":"account","incomeSubject":{"id":"A40680C6-4E1B-4E91-9B91-6DF95C3B8AF0","code":"660303","name":"财务费用_汇兑损失"},"loseSubject":{"id":"A40680C6-4E1B-4E91-9B91-6DF95C3B8AF0","code":"660303","name":"财务费用_汇兑损失"},"balanceDisplay":false,"accpurposes":{"id":"G001ZM0000DEFAULTACCPURPOSES00000001","code":"01","name":"对外财务报告核算目的"},"shortname":"12","shortname2":"","shortname3":"","shortname4":"","shortname5":"","shortname6":"","bookType":{"id":"mainbook","code":"ZZB","name":"主账簿"},"currencySchema":{"id":"G001ZM0000DEFAULTRATESCHEME00001","code":"001","name":"默认汇率方案"},"parentOrg":"34b37b7ac4a64a9e9ded2755acb1a22a__G001ZM0000DEFAULTACCPURPOSES00000001__mainbook","pk_org_id":"f80b1da4abf24354bbf5b95ed823f6a1__G001ZM0000DEFAULTACCPURPOSES00000001__mainbook","cashFlowType":{"id":"G001ZM0000DEFCASHFLOWTYPE00000000001","code":"0001","name":"基准现金流量类型"},"accountCheckStragegy":"Warning","voucherPrintType":null,"aotu_supplement_NO":true,"accbody":null,"orgname":null},{"id":"F095F5E2-9EEB-493E-8DB8-A506C95330B3","creator":{"id":"674db867-600d-40a7-b549-2cb208b60617","code":"super_test","name":"super_test"},"creationtime":"2019-01-23 15:43:19","modifier":{"id":"674db867-600d-40a7-b549-2cb208b60617","code":"super_test","name":"super_test"},"modifiedtime":"2019-02-16 10:15:37","pk_org":{"id":"ba117853d35a416a90899abed738e49e","code":"0919","name":"测试公司0919"},"pk_group":null,"description":null,"ts":"2019-02-16 10:15:37","dr":0,"state":0,"code":"wg","name":"wg","name2":null,"name3":null,"name4":null,"name5":null,"name6":null,"parentid":null,"classifyid":null,"enable":true,"def1":null,"def2":null,"def3":null,"def4":null,"def5":null,"def6":null,"def7":null,"def8":null,"def9":null,"def10":null,"def11":null,"def12":null,"def13":null,"def14":null,"def15":null,"def16":null,"def17":null,"def18":null,"def19":null,"def20":null,"def21":null,"def22":null,"def23":null,"def24":null,"def25":null,"def26":null,"def27":null,"def28":null,"def29":null,"def30":null,"subjectchart":{"id":"G001ZM0000DEFAULTSUBJECTCHART0000001","code":"0001","name":"基准科目表"},"multidimension":null,"accperiodscheme":{"id":"9a09ff8795034212ac78269438b91aa3","code":"0001","name":"基准会计期间方案"},"currency":{"id":"G001ZM0000DEFAULTCURRENCT00000000001","code":"CNY","name":"人民币"},"accperiod":{"id":"zdxz5dnqaccperiodd0076f720190101","code":"2019-01","name":"2019-01"},"accstandard":{"id":"G001ZM0000DEFAULTACCSTANDARD00000001","code":"01","name":"企业会计准则"},"autoaudit":false,"autotally":true,"accsubject":{"id":"56B176D1-EF15-498E-AF26-78843E7FBA54","code":"1001","name":"库存现金"},"profitMethod":"account","incomeSubject":null,"loseSubject":null,"balanceDisplay":false,"accpurposes":{"id":"G001ZM0000DEFAULTACCPURPOSES00000001","code":"01","name":"对外财务报告核算目的"},"shortname":"wg","shortname2":"","shortname3":"","shortname4":"","shortname5":"","shortname6":"","bookType":{"id":"mainbook","code":"ZZB","name":"主账簿"},"currencySchema":null,"parentOrg":"34b37b7ac4a64a9e9ded2755acb1a22a__G001ZM0000DEFAULTACCPURPOSES00000001__mainbook","pk_org_id":"ba117853d35a416a90899abed738e49e__G001ZM0000DEFAULTACCPURPOSES00000001__mainbook","cashFlowType":{"id":"G001ZM0000DEFCASHFLOWTYPE00000000001","code":"0001","name":"基准现金流量类型"},"accountCheckStragegy":"Warning","voucherPrintType":null,"aotu_supplement_NO":true,"accbody":null,"orgname":null},{"id":"C0373AA6-CB14-4A6A-9122-1D1A2D8AEAFA","creator":{"id":"674db867-600d-40a7-b549-2cb208b60617","code":"super_test","name":"super_test"},"creationtime":"2019-01-23 15:43:41","modifier":null,"modifiedtime":"2019-01-23 15:43:41","pk_org":{"id":"f5ae401bd3364f2087e9a0a48a90bb6d","code":"111","name":"111"},"pk_group":null,"description":null,"ts":"2019-01-23 15:43:41","dr":0,"state":0,"code":"wg2","name":"wg2","name2":null,"name3":null,"name4":null,"name5":null,"name6":null,"parentid":null,"classifyid":null,"enable":true,"def1":null,"def2":null,"def3":null,"def4":null,"def5":null,"def6":null,"def7":null,"def8":null,"def9":null,"def10":null,"def11":null,"def12":null,"def13":null,"def14":null,"def15":null,"def16":null,"def17":null,"def18":null,"def19":null,"def20":null,"def21":null,"def22":null,"def23":null,"def24":null,"def25":null,"def26":null,"def27":null,"def28":null,"def29":null,"def30":null,"subjectchart":{"id":"G001ZM0000DEFAULTSUBJECTCHART0000001","code":"0001","name":"基准科目表"},"multidimension":null,"accperiodscheme":{"id":"9a09ff8795034212ac78269438b91aa3","code":"0001","name":"基准会计期间方案"},"currency":{"id":"G001ZM0000DEFAULTCURRENCT00000000001","code":"CNY","name":"人民币"},"accperiod":{"id":"zdxz5dnqaccperiodd0076f720190101","code":"2019-01","name":"2019-01"},"accstandard":{"id":"G001ZM0000DEFAULTACCSTANDARD00000001","code":"01","name":"企业会计准则"},"autoaudit":false,"autotally":true,"accsubject":{"id":"56B176D1-EF15-498E-AF26-78843E7FBA54","code":"1001","name":"库存现金"},"profitMethod":"account","incomeSubject":null,"loseSubject":null,"balanceDisplay":false,"accpurposes":{"id":"G001ZM0000DEFAULTACCPURPOSES00000001","code":"01","name":"对外财务报告核算目的"},"shortname":"wg2","shortname2":"","shortname3":"","shortname4":"","shortname5":"","shortname6":"","bookType":{"id":"mainbook","code":"ZZB","name":"主账簿"},"currencySchema":null,"parentOrg":"34b37b7ac4a64a9e9ded2755acb1a22a__G001ZM0000DEFAULTACCPURPOSES00000001__mainbook","pk_org_id":"f5ae401bd3364f2087e9a0a48a90bb6d__G001ZM0000DEFAULTACCPURPOSES00000001__mainbook","cashFlowType":null,"accountCheckStragegy":"Warning","voucherPrintType":null,"aotu_supplement_NO":true,"accbody":null,"orgname":null},{"id":"E4A90B4C-6255-4D4A-BB3E-ECBF25AFAD36","creator":{"id":"674db867-600d-40a7-b549-2cb208b60617","code":"super_test","name":"super_test"},"creationtime":"2019-01-23 15:44:14","modifier":null,"modifiedtime":"2019-01-23 15:44:14","pk_org":{"id":"2a04475e037b44dea873bda9b1135440","code":"F法人公司3","name":"F法人公司3"},"pk_group":null,"description":null,"ts":"2019-01-23 15:44:14","dr":0,"state":0,"code":"wg3","name":"wg3","name2":null,"name3":null,"name4":null,"name5":null,"name6":null,"parentid":null,"classifyid":null,"enable":true,"def1":null,"def2":null,"def3":null,"def4":null,"def5":null,"def6":null,"def7":null,"def8":null,"def9":null,"def10":null,"def11":null,"def12":null,"def13":null,"def14":null,"def15":null,"def16":null,"def17":null,"def18":null,"def19":null,"def20":null,"def21":null,"def22":null,"def23":null,"def24":null,"def25":null,"def26":null,"def27":null,"def28":null,"def29":null,"def30":null,"subjectchart":{"id":"G001ZM0000DEFAULTSUBJECTCHART0000001","code":"0001","name":"基准科目表"},"multidimension":null,"accperiodscheme":{"id":"9a09ff8795034212ac78269438b91aa3","code":"0001","name":"基准会计期间方案"},"currency":{"id":"G001ZM0000DEFAULTCURRENCT00000000001","code":"CNY","name":"人民币"},"accperiod":{"id":"zdxz5dnqaccperiodd0076f720190101","code":"2019-01","name":"2019-01"},"accstandard":{"id":"G001ZM0000DEFAULTACCSTANDARD00000001","code":"01","name":"企业会计准则"},"autoaudit":false,"autotally":true,"accsubject":{"id":"56B176D1-EF15-498E-AF26-78843E7FBA54","code":"1001","name":"库存现金"},"profitMethod":"account","incomeSubject":null,"loseSubject":null,"balanceDisplay":false,"accpurposes":{"id":"G001ZM0000DEFAULTACCPURPOSES00000001","code":"01","name":"对外财务报告核算目的"},"shortname":"wg3","shortname2":"","shortname3":"","shortname4":"","shortname5":"","shortname6":"","bookType":{"id":"mainbook","code":"ZZB","name":"主账簿"},"currencySchema":null,"parentOrg":"0b6ec0c6d6d0442d9192eb082a7d17d3__G001ZM0000DEFAULTACCPURPOSES00000001__mainbook","pk_org_id":"2a04475e037b44dea873bda9b1135440__G001ZM0000DEFAULTACCPURPOSES00000001__mainbook","cashFlowType":null,"accountCheckStragegy":"Warning","voucherPrintType":null,"aotu_supplement_NO":true,"accbody":null,"orgname":null},{"id":"1486844B-EE6F-40A7-9A48-C4AF06D90453","creator":{"id":"674db867-600d-40a7-b549-2cb208b60617","code":"super_test","name":"super_test"},"creationtime":"2019-02-14 09:40:25","modifier":null,"modifiedtime":"2019-02-14 09:40:25","pk_org":{"id":"96f38ee3cb85465cb31b79ccad599dc6","code":"test1022","name":"生产1022"},"pk_group":null,"description":null,"ts":"2019-02-14 09:40:25","dr":0,"state":0,"code":"zhuchao001","name":"朱超测试","name2":null,"name3":null,"name4":null,"name5":null,"name6":null,"parentid":null,"classifyid":null,"enable":true,"def1":null,"def2":null,"def3":null,"def4":null,"def5":null,"def6":null,"def7":null,"def8":null,"def9":null,"def10":null,"def11":null,"def12":null,"def13":null,"def14":null,"def15":null,"def16":null,"def17":null,"def18":null,"def19":null,"def20":null,"def21":null,"def22":null,"def23":null,"def24":null,"def25":null,"def26":null,"def27":null,"def28":null,"def29":null,"def30":null,"subjectchart":{"id":"G001ZM0000DEFAULTSUBJECTCHART0000001","code":"0001","name":"基准科目表"},"multidimension":null,"accperiodscheme":{"id":"9a09ff8795034212ac78269438b91aa3","code":"0001","name":"基准会计期间方案"},"currency":{"id":"G001ZM0000DEFAULTCURRENCT00000000001","code":"CNY","name":"人民币"},"accperiod":{"id":"zdxz5dnqaccperiodad2bbaf20190101","code":"2019-02","name":"2019-02"},"accstandard":{"id":"G001ZM0000DEFAULTACCSTANDARD00000001","code":"01","name":"企业会计准则"},"autoaudit":false,"autotally":true,"accsubject":{"id":"56B176D1-EF15-498E-AF26-78843E7FBA54","code":"1001","name":"库存现金"},"profitMethod":"account","incomeSubject":null,"loseSubject":null,"balanceDisplay":false,"accpurposes":{"id":"G001ZM0000DEFAULTACCPURPOSES00000001","code":"01","name":"对外财务报告核算目的"},"shortname":"朱超测试","shortname2":"","shortname3":"","shortname4":"","shortname5":"","shortname6":"","bookType":{"id":"mainbook","code":"ZZB","name":"主账簿"},"currencySchema":null,"parentOrg":"34b37b7ac4a64a9e9ded2755acb1a22a__G001ZM0000DEFAULTACCPURPOSES00000001__mainbook","pk_org_id":"96f38ee3cb85465cb31b79ccad599dc6__G001ZM0000DEFAULTACCPURPOSES00000001__mainbook","cashFlowType":{"id":"G001ZM0000DEFCASHFLOWTYPE00000000001","code":"0001","name":"基准现金流量类型"},"accountCheckStragegy":"Warning","voucherPrintType":null,"aotu_supplement_NO":true,"accbody":null,"orgname":null}],"code":1,"total":0}
+	// 	return 
+	// }
+	// else if(url==='/ficloud/accsubject/query'){
+	// 	return '{}'
+	// }
+	// else if(url==='/note/template/getAction'){
+	// 	ctx.body = {"success":true,"message":"success","data":[{"id":"G001ZM000000000BTNQUERY0000000000001","code":"query","name":"查询","url":"/note/md/qtpl/querycondition","icon":null,"needparams":null,"afteraction":null,"beforeaction":null,"urltype":"local"},{"id":"G001ZM000000000BTNADD000000000000001","code":"add","name":"新增","url":null,"icon":null,"needparams":null,"afteraction":null,"beforeaction":null,"urltype":"local"},{"id":"G001ZM000000000BTNEDIT00000000000001","code":"edit","name":"编辑","url":null,"icon":null,"needparams":"1","afteraction":null,"beforeaction":null,"urltype":"local"},{"id":"G001ZM000000000BTNDEL000000000000001","code":"del","name":"删除","url":"/note/freectr/item/del","icon":null,"needparams":"1","afteraction":null,"beforeaction":null,"urltype":"local"},{"id":"G001ZM000000000BTNCOPY00000000000001","code":"listcopy","name":"复制","url":null,"icon":null,"needparams":"1","afteraction":null,"beforeaction":null,"urltype":"local"},{"id":"G001ZM000000000BTNOTP000000000000001","code":"sendotp","name":"审核","url":"/etl/yssx/sendto","icon":null,"needparams":"1","afteraction":null,"beforeaction":null,"urltype":"local"}],"code":20000,"total":0}
+	// 	return
+	// }
+	let data = null
+	// console.log(url);
+	// ctx.body = {success: true,"name":111}
+	// ctx.body = ctx.request
+	// console.log(method.toUpperCase());
+	if(method.toUpperCase()==='POST'){
+		data = ctx.request && ctx.request.body
+		// ctx.body = 
+		// return {success: true,"name":23222}
+	}else{
+		// data = ctx.request
+	}
+	// console.log(ctx.request);
+	let json = await getData2(url,method,data)
+	ctx.body = json
+	return ;
+	// let json = await getData2()
+	// ctx.body = json
+})
+router.get('/login', async function (ctx) {
+	let json = await getData()
+	ctx.body = json;
+})
+export default router
