@@ -76,3 +76,5 @@ src/ztc_index.js
 client/chart/chart.html
 client/home_index.html
 client/index.html
+
+data/*
