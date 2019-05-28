@@ -2,8 +2,18 @@
 
 ```
 比如登录 https://acc.yonyoucloud.com/
-修改 src/router/index.js 中的getData2方法变量 urls 改成 `https://acc.yonyoucloud.com/`+url
+修改 src/index.js 
+app.context.serverAddress = 'http://u8cacc-test.yyuap.com' //要访问的服务器
+app.context.cookies= '登录后的cookies'
 Cookie:改成你登录https://acc.yonyoucloud.com/中的Cookie
+
+也可以修改
+app.context.customSend = {
+  key: value
+}
+key 是要访问的地址: 如:/otp/ficloud_pub/initgrid
+value是返回的值对象json 值 {"success": true, "data": []}
+
 
 在FC的 config.js 文件中修改
 // serverHost='http://localhost:3333/'
