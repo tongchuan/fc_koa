@@ -96,17 +96,24 @@ router.all('*', async function(ctx){
 	if(method.toUpperCase()==='POST'){
 		data = ctx.request && ctx.request.body
 	}
-  let filename = await getFilename(url,method,data)
-  let cacheData = await getFileData(filename)
-  if(cacheData){
-    ctx.body = JSON.parse(cacheData)
-    return 
+  if(ctx.iscache){
+    let filename = await getFilename(url,method,data)
+    let cacheData = await getFileData(filename)
+    if(cacheData){
+      ctx.body = JSON.parse(cacheData)
+      return 
+    }else{
+      let jsonData = await getData(ctx.serverAddress + url,method,data,ctx)
+      writeData(filename,jsonData)
+      ctx.body = jsonData
+      return ;
+    }
   }else{
     let jsonData = await getData(ctx.serverAddress + url,method,data,ctx)
-    writeData(filename,jsonData)
     ctx.body = jsonData
     return ;
   }
+  
 })
 
 export default router
