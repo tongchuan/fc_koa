@@ -61,7 +61,7 @@ async function getData(url,method,data,ctx){
         body:  method==='GET' ? undefined :JSON.stringify(data),
         headers: { 
         	'Content-Type': 'application/json',
-        	'Cookie': ctx.cookies
+        	'Cookie': ctx.cookies,
         },
     })
     .then(res => res.json())
