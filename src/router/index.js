@@ -88,11 +88,11 @@ async function getData(url,method,data,ctx){
   }
   let requestBody = ''
   // console.log([url,ctx.request.header['content-type']]);
-  if(ctx.request.header['content-type'].indexOf('application/x-www-form-urlencoded') > -1){
+  if(ctx.request.header['content-type'] && ctx.request.header['content-type'].indexOf('application/x-www-form-urlencoded') > -1){
     requestBody = ctx.request.body ? querystring.stringify(ctx.request.body) : undefined;
     options.body=requestBody
     options.headers['Content-Length'] = Buffer.byteLength(requestBody)
-  }else if(ctx.request.header['content-type'].indexOf('application/json') > -1){
+  }else if(ctx.request.header['content-type'] && ctx.request.header['content-type'].indexOf('application/json') > -1){
     requestBody = JSON.stringify(data); // JSON.stringify(ctx.request.body);
     // console.log(data,requestBody,ctx.request.body);
     if(method!=='GET'){
@@ -101,7 +101,7 @@ async function getData(url,method,data,ctx){
     }
     
     
-  }else if(ctx.request.header['content-type'].indexOf('multipart/form-data') > -1){
+  }else if(ctx.request.header['content-type'] && ctx.request.header['content-type'].indexOf('multipart/form-data') > -1){
   /*
                                                       let jsondata ={
                                                                   success:true,
@@ -320,9 +320,15 @@ async function getData(url,method,data,ctx){
                                                                 options.headers['Content-Length'] = filesLength + Buffer.byteLength(endData);
       */
   }else {
-    requestBody = JSON.stringify(ctx.request.body)
-    options.body= requestBody//ctx.request.body
-    options.headers['Content-Length'] = Buffer.byteLength(requestBody)
+    // console.log(method);
+    if(method!=='GET'){
+      requestBody = JSON.stringify(ctx.request.body)
+      options.body=requestBody //method==="POST" ? requestBody : undefined
+      options.headers['Content-Length'] = Buffer.byteLength(requestBody)
+    }
+    // requestBody = JSON.stringify(ctx.request.body)
+    // options.body= requestBody//ctx.request.body
+    // options.headers['Content-Length'] = Buffer.byteLength(requestBody)
   }
   // console.log(options);
 	return await fetch(url, options)
