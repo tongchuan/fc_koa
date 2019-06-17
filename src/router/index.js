@@ -79,10 +79,10 @@ async function getData(url,method,data,ctx){
       method: method,
       body:  method==='GET' ? undefined :JSON.stringify(data),
       headers: Object.assign(ctx.request.header,{ 
-        'Content-Type': 'application/json',
-        origin: 'https://acc.yonyoucloud.com/',
-        referer: 'https://acc.yonyoucloud.com/',
-        Referer: 'https://acc.yonyoucloud.com/',
+        // 'Content-Type': 'application/json',
+        // origin: 'https://acc.yonyoucloud.com/',
+        // referer: 'https://acc.yonyoucloud.com/',
+        // Referer: 'https://acc.yonyoucloud.com/',
         'Cookie': ctx.cookies,
       }),
   }
