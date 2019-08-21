@@ -341,8 +341,8 @@ async function getData(url,method,data,ctx){
 
 const router = Router();
 router.all('*', async function(ctx){
-  // console.log(ctx.request.body);
-  // console.log(ctx.request.header);
+  console.log(ctx.request.body);
+  console.log(ctx.request.header);
   // ctx.body="{}"
   //   return;
 	let url = ctx.request.url;
