@@ -1,7 +1,7 @@
 ## fc 项目中解决跨域问题
 
 ```
-比如登录 https://acc.yonyoucloud.com/
+比如登录 https://acc.wwww.com/
 修改 src/index.js 
 app.context.serverAddress = 'http://www.ztc.com' //要访问的服务器
 app.context.cookies= '登录后的cookies'
