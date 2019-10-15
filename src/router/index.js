@@ -9,6 +9,14 @@ import request from 'request'
 import https from 'https'
 
 const secret = 'zhangtongchuan';
+function getCookiesData(cookies){
+ var pattern = /([0-9a-zA-Z-._]+)=([0-9a-zA-Z-._]+)/ig;
+ var parames = {};
+ cookies.replace(pattern, function(a, b, c){
+  parames[b] = c;
+ });
+ return parames;
+}
 async function writeData(file,data){
   if(isExists(file)){
     return;
@@ -83,7 +91,7 @@ async function getData(url,method,data,ctx){
         // origin: 'https://acc.yonyoucloud.com/',
         // referer: 'https://acc.yonyoucloud.com/',
         // Referer: 'https://acc.yonyoucloud.com/',
-        'Cookie': ctx.cookies,
+        'Cookie': ctx.cookies.value,
       }),
   }
   let requestBody = ''
@@ -330,9 +338,42 @@ async function getData(url,method,data,ctx){
     // options.body= requestBody//ctx.request.body
     // options.headers['Content-Length'] = Buffer.byteLength(requestBody)
   }
+  // console.log('');
+  // console.log(ctx.zhangtongchuan.ztc)
+  // console.log('');
+  // Object.defineProperty(ctx.zhangtongchuan,'ztc',{get:function(){
+  //   return Math.random()
+  // }})
+  // ctx.zhangtongchuan = Math.random()
   // console.log(options);
 	return await fetch(url, options)
-    .then(res => res.json())
+    .then(res => {
+
+      console.log(ctx.cookies.value);
+      let cookie = getCookiesData(ctx.cookies.value)
+      let setCookie = res.headers.get('Set-Cookie')
+      // console.log(cookie);
+      if(setCookie && setCookie.length > 0){
+        let newCookies = getCookiesData(setCookie)
+        Object.keys(newCookies).forEach((key)=>{
+          cookie[key]=newCookies[key]
+        })
+        let value = []
+        Object.keys(cookie).forEach((key)=>{
+          value.push(key,'=',cookie[key],';')
+        })
+        // console.log(value.join(''));
+        Object.defineProperty(ctx.cookies,'value',{get:function(){
+          return value.join('')
+        }})
+      }
+      // console.log('--====-----');
+      // console.log(ctx.cookies);
+      // console.log('-----');
+      // console.log(res.headers.get('Set-Cookie'));
+      // console.log('=====');
+     return res.json()
+    })
     .then(json => {
       return json
     });
@@ -340,9 +381,10 @@ async function getData(url,method,data,ctx){
 
 
 const router = Router();
+
 router.all('*', async function(ctx){
-  console.log(ctx.request.body);
-  console.log(ctx.request.header);
+  // console.log(ctx.request.body);
+  // console.log(ctx.request.header);
   // ctx.body="{}"
   //   return;
 	let url = ctx.request.url;
