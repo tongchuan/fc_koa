@@ -349,7 +349,7 @@ async function getData(url,method,data,ctx){
 	return await fetch(url, options)
     .then(res => {
 
-      console.log(ctx.cookies.value);
+      // console.log(ctx.cookies.value);
       let cookie = getCookiesData(ctx.cookies.value)
       let setCookie = res.headers.get('Set-Cookie')
       // console.log(cookie);
