@@ -1,11 +1,11 @@
 ## fc 项目中解决跨域问题
 
 ```
-比如登录 https://acc.yonyoucloud.com/
+比如登录 https://acc.wwww.com/
 修改 src/index.js 
-app.context.serverAddress = 'http://u8cacc-test.yyuap.com' //要访问的服务器
+app.context.serverAddress = 'http://www.ztc.com' //要访问的服务器
 app.context.cookies= '登录后的cookies'
-Cookie:改成你登录https://acc.yonyoucloud.com/中的Cookie
+Cookie:改成你登录https://acc.www.com/中的Cookie
 
 也可以修改
 app.context.customSend = {

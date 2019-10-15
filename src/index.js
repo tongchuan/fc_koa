@@ -12,8 +12,6 @@ import router from './router/index'
 // import routerfunction from './router/index'
 const app = new Koa();
 
-// app.context.serverAddress = 'https://acc.yonyoucloud.com'
-// app.context.serverAddress = 'http://u8cacc-test.yyuap.com'
 // app.context.serverAddress = 'http://172.20.52.22'
 app.context.iscache = false
 app.context.serverAddress = ''
