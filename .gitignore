@@ -77,6 +77,6 @@ client/chart/chart.html
 client/home_index.html
 client/index.html
 
-data/*
+data/**
 
 package-lock.json
