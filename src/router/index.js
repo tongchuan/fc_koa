@@ -21,12 +21,17 @@ async function writeData(file,data){
   if(isExists(file)){
     return;
   }
-  let buf = Buffer.from(JSON.stringify(data),'utf8')
-  fs.writeFile(file,buf.toString('base64'),(err)=>{
+  fs.writeFile(file,JSON.stringify(data),(err)=>{
     if(err){
       console.log(err);
     }
   })
+  // let buf = Buffer.from(JSON.stringify(data),'utf8')
+  // fs.writeFile(file,buf.toString('base64'),(err)=>{
+  //   if(err){
+  //     console.log(err);
+  //   }
+  // })
 }
 
 function isExists(file){
@@ -58,6 +63,7 @@ function randomWord(randomFlag, min, max){
 async function getFileData(file){
   if(isExists(file)){
     let data = fs.readFileSync(file,{encoding:'utf8',withFileTypes:false})
+    return data
     return new Buffer(data,'base64').toString();
   }
   return false
@@ -78,7 +84,7 @@ async function getFilename(url,method,data){
   let buf = Buffer.alloc(filestring.length,filestring)
   
   let hash = crypto.createHmac('sha256', secret).update(buf.toString('base64')).digest('hex')
-  return path.resolve(__dirname,'../../data',hash)
+  return path.resolve(__dirname,'../../data',url.replace(/\//igm,'_')+'_'+hash+'.json')
 }
 
 async function getData(url,method,data,ctx){
@@ -388,6 +394,7 @@ router.all('*', async function(ctx){
   // ctx.body="{}"
   //   return;
 	let url = ctx.request.url;
+  // console.log(url);
 	let method = ctx.request.method;
 	if(method.toUpperCase()==='OPTIONS'){
     ctx.body=""
@@ -410,8 +417,10 @@ router.all('*', async function(ctx){
 	if(method.toUpperCase()==='POST'){
 		data = ctx.request && ctx.request.body
 	}
+  console.log(url,method,data,ctx);
   if(ctx.iscache){
     let filename = await getFilename(url,method,data)
+    // console.log(filename)
     let cacheData = await getFileData(filename)
     if(cacheData){
       ctx.body = JSON.parse(cacheData)
