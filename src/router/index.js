@@ -9,16 +9,29 @@ import request from 'request'
 import https from 'https'
 
 const secret = 'zhangtongchuan';
+function getCookiesData(cookies){
+ var pattern = /([0-9a-zA-Z-._]+)=([0-9a-zA-Z-._]+)/ig;
+ var parames = {};
+ cookies.replace(pattern, function(a, b, c){
+  parames[b] = c;
+ });
+ return parames;
+}
 async function writeData(file,data){
   if(isExists(file)){
     return;
   }
-  let buf = Buffer.from(JSON.stringify(data),'utf8')
-  fs.writeFile(file,buf.toString('base64'),(err)=>{
+  fs.writeFile(file,JSON.stringify(data),(err)=>{
     if(err){
       console.log(err);
     }
   })
+  // let buf = Buffer.from(JSON.stringify(data),'utf8')
+  // fs.writeFile(file,buf.toString('base64'),(err)=>{
+  //   if(err){
+  //     console.log(err);
+  //   }
+  // })
 }
 
 function isExists(file){
@@ -50,6 +63,7 @@ function randomWord(randomFlag, min, max){
 async function getFileData(file){
   if(isExists(file)){
     let data = fs.readFileSync(file,{encoding:'utf8',withFileTypes:false})
+    return data
     return new Buffer(data,'base64').toString();
   }
   return false
@@ -70,7 +84,7 @@ async function getFilename(url,method,data){
   let buf = Buffer.alloc(filestring.length,filestring)
   
   let hash = crypto.createHmac('sha256', secret).update(buf.toString('base64')).digest('hex')
-  return path.resolve(__dirname,'../../data',hash)
+  return path.resolve(__dirname,'../../data',url.replace(/\//igm,'_')+'_'+hash+'.json')
 }
 
 async function getData(url,method,data,ctx){
@@ -83,7 +97,7 @@ async function getData(url,method,data,ctx){
         // origin: 'https://acc.yonyoucloud.com/',
         // referer: 'https://acc.yonyoucloud.com/',
         // Referer: 'https://acc.yonyoucloud.com/',
-        'Cookie': ctx.cookies,
+        'Cookie': ctx.cookies.value,
       }),
   }
   let requestBody = ''
@@ -330,9 +344,42 @@ async function getData(url,method,data,ctx){
     // options.body= requestBody//ctx.request.body
     // options.headers['Content-Length'] = Buffer.byteLength(requestBody)
   }
+  // console.log('');
+  // console.log(ctx.zhangtongchuan.ztc)
+  // console.log('');
+  // Object.defineProperty(ctx.zhangtongchuan,'ztc',{get:function(){
+  //   return Math.random()
+  // }})
+  // ctx.zhangtongchuan = Math.random()
   // console.log(options);
 	return await fetch(url, options)
-    .then(res => res.json())
+    .then(res => {
+
+      // console.log(ctx.cookies.value);
+      let cookie = getCookiesData(ctx.cookies.value)
+      let setCookie = res.headers.get('Set-Cookie')
+      // console.log(cookie);
+      if(setCookie && setCookie.length > 0){
+        let newCookies = getCookiesData(setCookie)
+        Object.keys(newCookies).forEach((key)=>{
+          cookie[key]=newCookies[key]
+        })
+        let value = []
+        Object.keys(cookie).forEach((key)=>{
+          value.push(key,'=',cookie[key],';')
+        })
+        // console.log(value.join(''));
+        Object.defineProperty(ctx.cookies,'value',{get:function(){
+          return value.join('')
+        }})
+      }
+      // console.log('--====-----');
+      // console.log(ctx.cookies);
+      // console.log('-----');
+      // console.log(res.headers.get('Set-Cookie'));
+      // console.log('=====');
+     return res.json()
+    })
     .then(json => {
       return json
     });
@@ -340,12 +387,14 @@ async function getData(url,method,data,ctx){
 
 
 const router = Router();
+
 router.all('*', async function(ctx){
   // console.log(ctx.request.body);
   // console.log(ctx.request.header);
   // ctx.body="{}"
   //   return;
 	let url = ctx.request.url;
+  // console.log(url);
 	let method = ctx.request.method;
 	if(method.toUpperCase()==='OPTIONS'){
     ctx.body=""
@@ -368,8 +417,10 @@ router.all('*', async function(ctx){
 	if(method.toUpperCase()==='POST'){
 		data = ctx.request && ctx.request.body
 	}
+  console.log(url,method,data,ctx);
   if(ctx.iscache){
     let filename = await getFilename(url,method,data)
+    // console.log(filename)
     let cacheData = await getFileData(filename)
     if(cacheData){
       ctx.body = JSON.parse(cacheData)
