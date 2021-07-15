@@ -78,3 +78,5 @@ client/home_index.html
 client/index.html
 
 data/*
+
+package-lock.json
