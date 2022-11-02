@@ -29,8 +29,8 @@ app.use(logger())
 		exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
 	    maxAge: 5,
 	    credentials: true,
-	    allowMethods: ['GET', 'POST', 'DELETE'],
-	    allowHeaders: ['Content-Type', 'Authorization', 'Accept']
+	    allowMethods: ['GET', 'POST', 'DELETE','OPTIONS'],
+	    allowHeaders: ['Content-Type', 'Authorization', 'Accept','X-XSRF-TOKEN']
 	}))
 	// .use(bodyParser())
   .use(compress())

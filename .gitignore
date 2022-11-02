@@ -80,3 +80,5 @@ client/index.html
 data/**
 
 package-lock.json
+
+.DS_Store
